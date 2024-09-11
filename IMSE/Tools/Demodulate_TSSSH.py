@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-from Tools.Plotting.graph_format import plot_format
+from IMSE.Tools.Plotting.graph_format import plot_format
 
 import matplotlib.pyplot as plt
 

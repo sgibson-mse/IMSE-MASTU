@@ -1,0 +1,4 @@
+#!/bin/bash
+module switch python/3.7
+which python
+python /home/sgibson/MAST-U/IMSE/IMSE/Tools/FLC_mse.py

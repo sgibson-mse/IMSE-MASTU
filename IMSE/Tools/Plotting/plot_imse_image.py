@@ -1,8 +1,8 @@
-from Tools.Demodulate_TSSSH import demodulate_images, load_image
+from IMSE.Tools.Demodulate_TSSSH import demodulate_images, load_image
 from scipy.signal import savgol_filter
 import matplotlib.pyplot as plt
 import numpy as np
-from Tools.load_msesim import MSESIM
+from IMSE.Tools.load_msesim import MSESIM
 from scipy.io import readsav
 import pyuda
 from scipy.interpolate import interp1d, interp2d
@@ -162,43 +162,45 @@ client = pyuda.Client()
 # filename1 = '/work/sgibson/MAST/IMSE/Images/Edge_Current/mastu_fiesta1.hdf'
 # filename2 = '/work/sgibson/MAST/IMSE/Images/Edge_Current/mastu_fiesta2.hdf'
 
-filename1 = '/work/sgibson/MAST/IMSE/Tools/mastu_1MA_P4_f85mm_-k0.1_FLC_45.hdf'
-filename2 = '/work/sgibson/MAST/IMSE/Tools/mastu_1MA_P4_f85mm_-k0.1_FLC_90.hdf'
+# filename1 = '/work/sgibson/MAST/IMSE/Tools/mastu_1MA_P4_f85mm_-k0.1_FLC_45.hdf'
+# filename2 = '/work/sgibson/MAST/IMSE/Tools/mastu_1MA_P4_f85mm_-k0.1_FLC_90.hdf'
 
+
+filename1 = '/home/sgibson/MAST-U/IMSE/IMSE/Tools/imse_2d_mastu_grasshopper_hm07c_f50mm_state1_100kAECCD.hdf'
 #load the images
 
 image_1 = load_image(filename1)
-image_2 = load_image(filename2)
+# image_2 = load_image(filename2)
 
-#get the polarisation angle from demodulating images
+# #get the polarisation angle from demodulating images
 
-polarisation_angle = demodulate_images(image_1, image_2)
+# polarisation_angle = demodulate_images(image_1, image_2)
 
-#load the msesim run
+# #load the msesim run
 
-#filepath = '/work/sgibson/msesim/runs/imse_2d_32x32_MASTU_edgecurrent/output/data/MASTU_edgecurrent.dat'
-filepath = '/work/sgibson/msesim/runs/imse_2d_MASTU_1MA_wedge/output/data/MASTU_1MA.dat'
-msesim = MSESIM(filepath=filepath, dimension=2)
+# #filepath = '/work/sgibson/msesim/runs/imse_2d_32x32_MASTU_edgecurrent/output/data/MASTU_edgecurrent.dat'
+# filepath = '/work/sgibson/msesim/runs/imse_2d_MASTU_1MA_wedge/output/data/MASTU_1MA.dat'
+# msesim = MSESIM(filepath=filepath, dimension=2)
 
-#load the equilibrium used in msesim run
-eq = readsav('/work/sgibson/msesim/equi/equi_MASTU_1MA_P4_CATIA.sav')
+# #load the equilibrium used in msesim run
+# eq = readsav('/work/sgibson/msesim/equi/equi_MASTU_1MA_P4_CATIA.sav')
 
-#get r,z values
-r = msesim.major_radius
-z = msesim.central_coordinates[:,:,2]
+# #get r,z values
+# r = msesim.major_radius
+# z = msesim.central_coordinates[:,:,2]
 
-#interpolate onto the size of the camera sensor
-new_r = np.linspace(np.min(r), np.max(r), 1024)
-new_z = np.linspace(np.min(z), np.max(z), 1024)
+# #interpolate onto the size of the camera sensor
+# new_r = np.linspace(np.min(r), np.max(r), 1024)
+# new_z = np.linspace(np.min(z), np.max(z), 1024)
 
-#get geometry coefficients to calculate Bz
-# a0, a2, a3, a5 = get_geometry_coefficients()
-# Bz = calculate_Bz(a0, a2, a3, a5, eq)
-# Br = calculate_Br(new_r, new_z, eq)
-# calculate_current(new_r, new_z,Bz,Br)
+# #get geometry coefficients to calculate Bz
+# # a0, a2, a3, a5 = get_geometry_coefficients()
+# # Bz = calculate_Bz(a0, a2, a3, a5, eq)
+# # Br = calculate_Br(new_r, new_z, eq)
+# # calculate_current(new_r, new_z,Bz,Br)
 
-#calculate current density directly from data
+# #calculate current density directly from data
 
-plot_2d_polarisation_angle(r, z, polarisation_angle, eq)
-# plot_Bz(r,z,Bz,eq)
+# plot_2d_polarisation_angle(r, z, polarisation_angle, eq)
+# # plot_Bz(r,z,Bz,eq)
 

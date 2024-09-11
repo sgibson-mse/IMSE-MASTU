@@ -1,6 +1,6 @@
 import numpy as np
 
-#Read a .dat binary file which contains images from the IMSE diagnostic system.
+#Read a .dat binary file which contains images from the ANU IMSE diagnostic system.
 
 def load_ashbinary(filename, FLC):
 

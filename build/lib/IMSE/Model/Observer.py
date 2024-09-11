@@ -13,7 +13,7 @@ Calculate the total signal to noise ratio including the read, dark and shot nois
 
 class Camera(object):
 
-    def __init__(self, name):
+    def __init__(self, name, lens):
 
         self.name = name
 
@@ -183,7 +183,7 @@ class Camera(object):
         self.x = np.linspace(-1 * self.sensor_size_x / 2, 1 * self.sensor_size_x / 2, self.px)
         self.y = np.linspace(-1 * self.sensor_size_y / 2, 1 * self.sensor_size_y / 2, self.py)
 
-        self.xx, self.yy = np.meshgrid(x, y)
+        self.xx, self.yy = np.meshgrid(self.x, self.y)
 
         self.alpha = np.arctan(np.sqrt((self.xx)**2 + (self.yy)**2)/(lens.focal_length*10**-6))
         self.beta = np.arctan2(self.yy,self.xx)
@@ -216,7 +216,7 @@ class Camera(object):
         self.x = np.linspace(-1 * self.sensor_size_x / 2, 1 * self.sensor_size_x / 2, self.px)
         self.y = np.linspace(-1 * self.sensor_size_y / 2, 1 * self.sensor_size_y / 2, self.py)
 
-        self.xx, self.yy = np.meshgrid(x, y)
+        self.xx, self.yy = np.meshgrid(self.x, self.y)
 
         self.alpha = np.arctan(np.sqrt((self.xx)**2 + (self.yy)**2)/(lens.focal_length*10**-6))
         self.beta = np.arctan2(self.yy,self.xx)
@@ -250,7 +250,7 @@ class Camera(object):
         self.x = np.linspace(-1 * self.sensor_size_x / 2, 1 * self.sensor_size_x / 2, self.px)
         self.y = np.linspace(-1 * self.sensor_size_y / 2, 1 * self.sensor_size_y / 2, self.py)
 
-        self.xx, self.yy = np.meshgrid(x, y)
+        self.xx, self.yy = np.meshgrid(self.x, self.y)
 
         self.alpha = np.arctan(np.sqrt((self.xx) ** 2 + (self.yy) ** 2) / (lens.focal_length * 10 ** -6))
         self.beta = np.arctan2(self.yy, self.xx)

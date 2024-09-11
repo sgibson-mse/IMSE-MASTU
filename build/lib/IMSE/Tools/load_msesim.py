@@ -151,9 +151,13 @@ class MSESIM():
         if self.dimension == 2:
 
             self.channels = self.data['channels']
+            print('channels', len(self.channels))
 
-            self.x = np.linspace(-10.24*10**-3,10.24*10**-3, np.sqrt(len(self.channels)))
-            self.y = np.linspace(-10.24*10**-3,10.24*10**-3, np.sqrt(len(self.channels)))
+            #self.x = np.linspace(-10.24*10**-3,10.24*10**-3, int(np.sqrt(len(self.channels))))
+            #self.y = np.linspace(-10.24*10**-3,10.24*10**-3, int(np.sqrt(len(self.channels))))
+
+            self.x = (-7.2*10**-3, 7.3*10**-3, int(np.sqrt(len(self.channels))))
+            self.y = (-4.95*10**-3, 4.95*10**-3, int(np.sqrt(len(self.channels))))
 
             self.stokes_vector = self.stokes_vector.reshape(int(np.sqrt(len(self.channels))),int(np.sqrt(len(self.channels))),len(self.stokes_vector[0,:,0]), len(self.wavelength)) # x, y, stokes, wavelength
 

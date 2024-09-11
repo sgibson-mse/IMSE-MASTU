@@ -1,0 +1,10 @@
+# @ executable = /home/sgibson/MAST-U/IMSE/IMSE/Tools/msejob
+# @ max_processors = 8
+# @ min_processors = 1
+# @ input = /dev/null
+# @ error = flc.err
+# @ output = flc.out
+# @ initialdir = /home/sgibson/MAST-U/IMSE/IMSE/Tools/
+# @ notify_user = sgibson
+# @ notification = complete
+# @ queue

@@ -1,8 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from Tools.Plotting.graph_format import plot_format
+from IMSE.Tools.Plotting.graph_format import plot_format
 
-from Tools.load_msesim import MSESIM
+from IMSE.Tools.load_msesim import MSESIM
 
 plot_format()
 
@@ -13,7 +13,7 @@ Calculate the total signal to noise ratio including the read, dark and shot nois
 
 class Camera(object):
 
-    def __init__(self, name):
+    def __init__(self, name, lens):
 
         self.name = name
 
@@ -42,9 +42,9 @@ class Camera(object):
         elif self.name == 'pco-edge':
             self.pco_specs(self.name)
         elif self.name == 'flir':
-            self.flir_specs(self.name)
+            self.flir_specs(self.name, lens)
         elif self.name == 'grasshopper':
-            self.grasshopper_specs(self.name)
+            self.grasshopper_specs(self.name, lens)
         else:
             print('Camera properties are not currently implemented, choose photron-sa4, pco-edge or flir!')
 
@@ -158,7 +158,7 @@ class Camera(object):
         self.xx, self.yy = np.meshgrid(self.x, self.y)
 	
 
-    def pco_specs(self, name):
+    def pco_specs(self, name, lens):
 
         self.name = name
         self.px = 2560
@@ -183,12 +183,12 @@ class Camera(object):
         self.x = np.linspace(-1 * self.sensor_size_x / 2, 1 * self.sensor_size_x / 2, self.px)
         self.y = np.linspace(-1 * self.sensor_size_y / 2, 1 * self.sensor_size_y / 2, self.py)
 
-        self.xx, self.yy = np.meshgrid(x, y)
+        self.xx, self.yy = np.meshgrid(self.x, self.y)
 
         self.alpha = np.arctan(np.sqrt((self.xx)**2 + (self.yy)**2)/(lens.focal_length*10**-6))
         self.beta = np.arctan2(self.yy,self.xx)
 
-    def flir_specs(self, name):
+    def flir_specs(self, name, lens):
 
         self.name = name
         self.px = 1600
@@ -216,12 +216,12 @@ class Camera(object):
         self.x = np.linspace(-1 * self.sensor_size_x / 2, 1 * self.sensor_size_x / 2, self.px)
         self.y = np.linspace(-1 * self.sensor_size_y / 2, 1 * self.sensor_size_y / 2, self.py)
 
-        self.xx, self.yy = np.meshgrid(x, y)
+        self.xx, self.yy = np.meshgrid(self.x, self.y)
 
         self.alpha = np.arctan(np.sqrt((self.xx)**2 + (self.yy)**2)/(lens.focal_length*10**-6))
         self.beta = np.arctan2(self.yy,self.xx)
 
-    def grasshopper_specs(self, name):
+    def grasshopper_specs(self, name, lens):
 
         self.name = name
 
@@ -250,7 +250,7 @@ class Camera(object):
         self.x = np.linspace(-1 * self.sensor_size_x / 2, 1 * self.sensor_size_x / 2, self.px)
         self.y = np.linspace(-1 * self.sensor_size_y / 2, 1 * self.sensor_size_y / 2, self.py)
 
-        self.xx, self.yy = np.meshgrid(x, y)
+        self.xx, self.yy = np.meshgrid(self.x, self.y, indexing='ij')
 
         self.alpha = np.arctan(np.sqrt((self.xx) ** 2 + (self.yy) ** 2) / (lens.focal_length * 10 ** -6))
         self.beta = np.arctan2(self.yy, self.xx)

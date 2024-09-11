@@ -1,0 +1,4 @@
+#!/bin/bash
+module switch python/3.7
+which python
+python FLC_mse.py

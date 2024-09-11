@@ -1,3 +1,2 @@
 pycpf==0.1
-uda==2.5.3
-uda-mast===master
+uda>2.5.3

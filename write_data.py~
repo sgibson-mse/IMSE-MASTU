@@ -1,0 +1,97 @@
+import sys
+import pyuda
+from mast.mast_client import MastClient
+import numpy as np
+
+diag_tag = 'xyz'
+shot = 12345
+pass_number = 0
+status = 1 
+conventions = 'Fusion-1.1'
+directory = '/home/sgibson/MAST-U/IMSE'
+filename = diag_tag+"{:06d}".format(shot)+'.nc'
+
+exposure_time = 1/163
+bit_depth = 8
+
+time_axis = np.linspace(-0.05, 0.95, 163)
+r_vals = np.linspace(0, 1.5, 1920)
+z_vals = np.linspace(-0.2,0.2, 1200)
+
+error_data = np.zeros((len(time_axis), len(r_vals), len(z_vals)))
+data = np.zeros((len(time_axis), len(r_vals), len(z_vals)))
+
+client = MastClient(None)
+
+group = "/{diag_tag}/flir/metadata"
+
+#-------------------------------
+# 1. Create step
+# class, shot and title are required attributes for all file types
+# pass and status are required for Analysed files
+# status flags are:
+# -1 : Bad data that should not be used.
+# 0 : Something is wrong with the data.
+# 1 : Data unchecked : analysis code ran successfully but data quality unknown
+# 2 : Data checked by RO and no known problems, may still need further checks before publication
+# 3 : Data checked and good quality for eg. publication
+#-------------------------------
+
+try:
+    client.put(filename, directory=directory, step_id='create',
+               conventions='Fusion-1.1', shot=shot,
+               data_class='analysed data', title='Example netcdf file',
+               comment='Example MAST-U netcdf file written with putdata in IDL',
+               code='putdata_example.py',
+               pass_number=pass_number, status=1,
+               verbose=True, debug=True)
+except pyuda.UDAException:
+    print("<< ERROR >> Failed to create NetCDF file")
+    sys.exit()
+
+#-------------------------------
+# 2. Add devices (if relevant)
+# Devices can be used to record information about
+# eg. dataq, diagnostic configuration, model run parameters etc.
+# that are relevant to the data stored in the file.
+# Only the device name is required, other keywords are optional
+# Additional user-defined attributes can be added to devices (see step Attribute later)
+#-------------------------------
+
+#Resolution - Number of bits
+
+try:
+    client.put('FLIR', step_id='device',
+                type='Camera', id='#1',
+                serial='GS3-U3-23S6M-C', resolution=bit_depth,
+                range=[0, 2**8-1], channels=1, group='/{diag_tag}')
+except pyuda.UDAException:
+    print('<< ERROR >> Failed to write device to file')
+    sys.exit()
+
+try:
+  client.put(bit_depth, step_id='attribute',
+             group=group, name="bit_depth",
+             units='NA')
+except pyuda.UDAException:
+  print(f"NetCDF Error - Issue creating attribute in {group}") 
+            
+
+#--------------------------------
+# 8. Close file
+#--------------------------------
+try:
+    client.put(step_id='close')
+except pyuda.UDAException:
+    print("<< ERROR >> Failed to close file")
+    sys.exit()
+#--------------------------------
+# 9. Re-open file for update
+# Example is changing status of file
+#--------------------------------
+try:
+    client.put(filename, directory=directory, step_id='update', status=2)
+except pyuda.UDAException:
+    print("<< ERROR >> Failed to update file")
+    sys.exit()
+
